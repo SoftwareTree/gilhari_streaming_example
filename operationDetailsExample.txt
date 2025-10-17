@@ -1,0 +1,27 @@
+Simple example:
+
+For GraphQL Semantics:
+
+In the Body of a GET request:
+
+// Example 1 (projections)
+
+
+{
+    "operationDetails": [
+        {
+            "opType": "projections",
+            "projectionsDetails": [
+                {
+                    "type": "Employee",
+                    "attribs": [
+                        "name",
+                        "id"
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+

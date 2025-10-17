@@ -1,0 +1,1 @@
+docker run  -p 80:8081 gilhari_streaming_example:1.0
