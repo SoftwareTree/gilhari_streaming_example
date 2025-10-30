@@ -19,8 +19,9 @@ The example uses the base Gilhari docker image (softwaretree/gilhari) to easily 
 This example can be used **standalone as a RESTful microservice** or optionally with the ORMCP Server.
 
 **Related:**
-- Main ORMCP Server: [https://github.com/SoftwareTree/ormcp-server](https://github.com/SoftwareTree/ormcp-server)
-- Basic example: [gilhari_simple_example](https://github.com/SoftwareTree/gilhari_simple_example)
+- **Basic example**: [gilhari_simple_example](https://github.com/SoftwareTree/gilhari_simple_example)
+- **ORMCP Documentation**: [https://github.com/softwaretree/ormcp-docs](https://github.com/softwaretree/ormcp-docs)
+- **ORMCP/Gilhari Examples**: [https://github.com/softwaretree/ormcp-docs#examples](https://github.com/softwaretree/ormcp-docs#examples) - Comprehensive list of examples
 
 **Note:** This example is also included in the Gilhari SDK distribution. If you have the SDK installed, you can use it directly from the `examples/gilhari_streaming_example` directory without cloning.
 
@@ -380,6 +381,11 @@ This Gilhari microservice can be used with the ORMCP Server for AI-powered datab
 
 The ORMCP Server can leverage streaming queries for processing large result sets efficiently.
 
+For more information on ORMCP Server:
+- **ORMCP Documentation**: [https://github.com/softwaretree/ormcp-docs](https://github.com/softwaretree/ormcp-docs)
+- **ORMCP/Gilhari Examples**: [https://github.com/softwaretree/ormcp-docs#examples](https://github.com/softwaretree/ormcp-docs#examples)
+- **Product Website**: [https://www.softwaretree.com/products/ormcp/](https://www.softwaretree.com/products/ormcp/)
+
 ## Development Tools
 
 ### Docker Container Access
@@ -406,8 +412,9 @@ docker stop <container-id>
 
 - **JDX User Manual**: "Persisting JSON Objects" section for detailed ORM specification documentation
 - **Gilhari SDK Documentation**: The SDK available for download at [https://softwaretree.com](https://softwaretree.com)
-- **ORMCP Server**: Main repository at [https://github.com/SoftwareTree/ormcp-server](https://github.com/SoftwareTree/ormcp-server)
+- **ORMCP Documentation**: [https://github.com/softwaretree/ormcp-docs](https://github.com/softwaretree/ormcp-docs)
 - **Database Configuration Guide**: See `JDX_DATABASE_JDBC_DRIVER_Specification_Guide.md`
+- **operationDetails Documentation**: See `operationDetails_doc.md` for GraphQL-like query capabilities
 - **Basic example**: [gilhari_simple_example](https://github.com/SoftwareTree/gilhari_simple_example)
 
 ## Platform Notes
@@ -450,7 +457,7 @@ chmod +x *.sh
 ## Support
 
 For issues or questions:
-- **ORMCP Server issues**: [https://github.com/SoftwareTree/ormcp-server/issues](https://github.com/SoftwareTree/ormcp-server/issues)
+- **ORMCP Documentation & Issues**: [https://github.com/softwaretree/ormcp-docs/issues](https://github.com/softwaretree/ormcp-docs/issues)
 - **This example**: [https://github.com/SoftwareTree/gilhari_streaming_example/issues](https://github.com/SoftwareTree/gilhari_streaming_example/issues)
 - **Gilhari SDK**: Contact support at [gilhari_support@softwaretree.com](mailto:gilhari_support@softwaretree.com)
 
