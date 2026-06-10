@@ -4,6 +4,7 @@
 # Compile java source files with JDK 1.8 compatibility
 # set JX_HOME to the root directory of Gilhari installation.
 JX_HOME=$PWD/../..
+mkdir -p ./bin
 
 # With JDK 1.8
 javac -d ./bin -cp .:$JX_HOME/libs/jxclasses.jar:$JX_HOME/external_libs/json-json-20240303.jar @sources.txt
