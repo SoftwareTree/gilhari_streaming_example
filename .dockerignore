@@ -1,0 +1,12 @@
+# The Docker build context is the project root (see gilhari/build.cmd and
+# gilhari/build.sh). The Dockerfile copies only bin/, config/ and
+# gilhari/gilhari_service.config into the image; these entries keep the rest
+# of the project out of the build context. This file must stay in the
+# project root: Docker reads it from the build context, not from the
+# Dockerfile's directory.
+.git
+src
+scripts
+kubernetes
+*.md
+**/curl.log

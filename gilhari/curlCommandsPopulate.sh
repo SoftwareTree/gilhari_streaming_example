@@ -34,6 +34,17 @@ echo "" >> "$log_file"
 echo "Using PORT number $port" >> "$log_file"
 echo "" >> "$log_file"
 
+# Check that the Gilhari microservice is up before sending any other requests
+echo "** Check the health of the Gilhari microservice" >> curl.log
+if ! curl -fsS "http://localhost:${port:-80}/gilhari/v1/health/check" >> curl.log 2>&1; then
+    echo "" >> curl.log
+    echo "The Gilhari microservice is not responding at http://localhost:${port:-80}/gilhari/v1/" | tee -a curl.log
+    echo "Start it first (e.g., ./gilhari/run_docker_app.sh) and wait until it is ready." | tee -a curl.log
+    exit 1
+fi
+echo "" >> curl.log
+echo "" >> curl.log
+
 # ** Delete all Employee objects to start fresh
 echo "** Delete all Employee objects to start fresh" >> "$log_file"
 curl -X DELETE "http://localhost:$port/gilhari/v1/Employee" >> "$log_file"
