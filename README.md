@@ -99,15 +99,15 @@ gilhari_streaming_example/
 ├── bin/                                 # Compiled .class files
 ├── scripts/                             # Development scripts
 │   └── compile.cmd / .sh                # Compiles the container domain model classes
-├── gilhari/                             # Gilhari microservice (Docker) files
+├── gilhari/                             # Gilhari microservice (Docker) related files
 │   ├── Dockerfile                       # Docker image definition
 │   ├── gilhari_service.config           # Service configuration
 │   ├── build.cmd / .sh                  # Builds the Docker image
 │   ├── run_docker_app.cmd / .sh         # Runs the Docker container
-│   ├── curlCommands.cmd / .sh           # API testing scripts
-│   ├── curlCommandsPopulate.cmd / .sh   # Sample data population scripts
-│   ├── curlCommandsStreamingAsync.cmd / .sh # Streaming API calls (async mode)
-│   ├── curlCommandsStreamingSync.cmd / .sh # Streaming API calls (sync mode)
+│   ├── curlCommands.cmd / .sh           # REST API testing scripts
+│   ├── curlCommandsPopulate.cmd / .sh   # Populate sample data via the REST API
+│   ├── curlCommandsStreamingAsync.cmd / .sh # Streaming REST API calls (async mode)
+│   ├── curlCommandsStreamingSync.cmd / .sh # Streaming REST API calls (sync mode)
 │   ├── operationDetailsExample.txt      # operationDetails examples
 │   ├── operationDetails_doc.md          # operationDetails parameter reference
 │   └── connectORMCP.md                  # Connecting ORMCP Server to this microservice
@@ -444,10 +444,26 @@ chmod +x scripts/*.sh gilhari/*.sh
 - **Solution**: Verify JDK 1.8+ is installed and JX_HOME environment variable is set correctly
 
 **Problem**: Port 80 already in use
-- **Solution**: Modify the `gilhari/run_docker_app` script to use a different port (e.g., `-p 8080:8081`)
+- **Solution**: Either stop the service that is already listening on port 80, or change the host port in the `gilhari/run_docker_app` script (e.g., `-p 8080:8081`). In the latter case, pass the same port to the curl scripts, for example `gilhari\curlCommands.cmd 8080` (Windows) or `./gilhari/curlCommands.sh 8080` (Linux/Mac)
 
 **Problem**: Database connection errors
-- **Solution**: Check `config/gilhari_streaming_example.jdx` for correct database URL and JDBC driver path
+- **Solution**: Check `config/gilhari_streaming_example.jdx` for the correct database URL and JDBC driver. The URL is used from inside the Docker container, where `localhost` refers to the container itself. If your database runs outside the container (on your machine or on another server), specify its host and port in the URL in one of these formats:
+  ```
+  host.docker.internal:<PortNumber>
+  <DatabaseServer_IP_Address>:<PortNumber>
+  ```
+  `host.docker.internal` refers to the machine running Docker (on Linux, add `--add-host=host.docker.internal:host-gateway` to the `docker run` command in `gilhari/run_docker_app`). See the [JDX_DATABASE and JDBC_DRIVER Specification Guide](https://github.com/SoftwareTree/jdx-docs/blob/main/guides/JDX_DATABASE_JDBC_DRIVER_Specification_Guide.md) for examples for different databases.
+
+**Problem**: Changes to the SQLite database are lost when the container is removed, or the microservice should use (and update) the database file in your project
+- **Solution**: `gilhari/Dockerfile` copies the `config` directory, including the SQLite `.db` file, into the image, so each container works on its own copy of the database. Changes survive `docker stop` / `docker start` but are lost when the container is removed, and they never reach the `.db` file in your project. To use the original file instead, mount the project's `config` directory over the container's copy. From the project root, run:
+  ```bash
+  # Windows (Command Prompt)
+  docker run --platform linux/amd64 -p 80:8081 -v "%CD%\config:/opt/gilhari_streaming_example/config" gilhari_streaming_example:1.0
+
+  # Linux/Mac
+  docker run --platform linux/amd64 -p 80:8081 -v "$(pwd)/config:/opt/gilhari_streaming_example/config" gilhari_streaming_example:1.0
+  ```
+  The database URL in the `.jdx` file (`jdbc:sqlite:./config/...`) is relative to the container's working directory (`/opt/gilhari_streaming_example`), so it points to the mounted file without any change. Also make sure that `jdx_force_create_schema` is `"false"` in `gilhari/gilhari_service.config` (if you change it, rebuild the image); otherwise the tables are recreated, and their data erased, each time the microservice starts. Keep a backup copy of the `.db` file, and stop the container before you open or copy the file with other tools.
 
 **Problem**: fetchMore returns empty results
 - **Solution**: Make sure you called startStream first. fetchMore only works with an active stream
