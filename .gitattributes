@@ -1,6 +1,16 @@
+# Store text files with LF line endings in the repository and check them out
+# with LF as well (Git detects which files are text). The rules below
+# override this for scripts that need specific line endings.
+* text=auto eol=lf
+
 # Shell scripts should always use LF line endings (Unix-style)
 *.sh text eol=lf
 
 # Batch files should use CRLF line endings (Windows-style)
 *.bat text eol=crlf
 *.cmd text eol=crlf
+
+# Binary files (never converted)
+*.class binary
+*.jar binary
+*.db binary
